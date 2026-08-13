@@ -1,6 +1,6 @@
 {
   "name": "@rafaelcostapalma/consent",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Framework-agnostic cookie/data consent manager (LGPD/GDPR) with a vanilla core and pluggable integrations (Google Consent Mode included).",
   "license": "MIT",
   "type": "module",
