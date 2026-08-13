@@ -6,14 +6,17 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./browser": "./dist/browser.global.js",
     "./style.css": "./dist/consent.css",
     "./integrations/google-consent-mode": {
+      "types": "./dist/integrations/google-consent-mode.d.ts",
       "import": "./dist/integrations/google-consent-mode.mjs",
       "require": "./dist/integrations/google-consent-mode.cjs"
     }
