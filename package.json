@@ -1,0 +1,44 @@
+{
+  "name": "@rafaelcostapalma/consent",
+  "version": "0.1.0",
+  "description": "Framework-agnostic cookie/data consent manager (LGPD/GDPR) with a vanilla core and pluggable integrations (Google Consent Mode included).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": "./dist/browser.global.js",
+    "./style.css": "./dist/consent.css",
+    "./integrations/google-consent-mode": {
+      "import": "./dist/integrations/google-consent-mode.mjs",
+      "require": "./dist/integrations/google-consent-mode.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup && node scripts/copy-assets.mjs",
+    "dev": "tsup --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2"
+  },
+  "keywords": [
+    "cookie-consent",
+    "lgpd",
+    "gdpr",
+    "consent-mode",
+    "cmp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaelcostapalma/consent.git"
+  }
+}

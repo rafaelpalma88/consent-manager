@@ -1,0 +1,231 @@
+/*!
+ * @rafaelcostapalma/consent — default styling.
+ * Neutral by design: override the --mkc-* custom properties in the host
+ * app's own stylesheet to match its brand instead of editing this file.
+ */
+:root {
+  --mkc-bg: #16161a;
+  --mkc-text: #f4f4f4;
+  --mkc-muted: #9a9aa2;
+  --mkc-border: rgba(255, 255, 255, 0.12);
+  --mkc-accent: #2563eb;
+  --mkc-accent-contrast: #ffffff;
+  --mkc-radius: 12px;
+  --mkc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mkc-z: 9999;
+}
+
+.mkc-banner,
+.mkc-modal,
+.mkc-overlay {
+  box-sizing: border-box;
+  font-family: var(--mkc-font);
+}
+
+.mkc-banner *,
+.mkc-modal * {
+  box-sizing: border-box;
+}
+
+/* Banner */
+.mkc-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: var(--mkc-z);
+  max-width: 920px;
+  margin: 0 auto;
+  background: var(--mkc-bg);
+  color: var(--mkc-text);
+  border: 1px solid var(--mkc-border);
+  border-radius: var(--mkc-radius);
+  padding: 20px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.mkc-banner-body {
+  flex: 1 1 320px;
+  min-width: 240px;
+}
+
+.mkc-banner-title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.mkc-banner-desc {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--mkc-muted);
+}
+
+.mkc-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.mkc-link {
+  color: var(--mkc-accent);
+  text-decoration: underline;
+}
+
+/* Buttons */
+.mkc-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: calc(var(--mkc-radius) - 4px);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mkc-btn-primary {
+  background: var(--mkc-accent);
+  color: var(--mkc-accent-contrast);
+}
+
+.mkc-btn-outline {
+  background: transparent;
+  color: var(--mkc-text);
+  border-color: var(--mkc-border);
+}
+
+.mkc-btn-ghost {
+  background: transparent;
+  color: var(--mkc-muted);
+  border-color: transparent;
+  text-decoration: underline;
+}
+
+/* Preferences modal */
+.mkc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: var(--mkc-z);
+}
+
+.mkc-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: calc(var(--mkc-z) + 1);
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  background: var(--mkc-bg);
+  color: var(--mkc-text);
+  border: 1px solid var(--mkc-border);
+  border-radius: var(--mkc-radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.mkc-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--mkc-border);
+}
+
+.mkc-modal-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.mkc-close {
+  background: none;
+  border: none;
+  color: var(--mkc-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mkc-modal-body {
+  padding: 8px 24px;
+}
+
+.mkc-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--mkc-border);
+  cursor: pointer;
+}
+
+.mkc-row:last-child {
+  border-bottom: none;
+}
+
+.mkc-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mkc-row-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.mkc-row-label em {
+  font-weight: 400;
+  font-style: normal;
+  color: var(--mkc-muted);
+  font-size: 0.78rem;
+}
+
+.mkc-row-desc {
+  font-size: 0.8rem;
+  color: var(--mkc-muted);
+  line-height: 1.45;
+}
+
+.mkc-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--mkc-accent);
+  margin-top: 2px;
+}
+
+.mkc-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--mkc-border);
+}
+
+@media (max-width: 520px) {
+  .mkc-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mkc-banner-actions {
+    justify-content: stretch;
+  }
+
+  .mkc-banner-actions .mkc-btn {
+    flex: 1 1 auto;
+  }
+}
