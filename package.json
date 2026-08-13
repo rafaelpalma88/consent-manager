@@ -4,6 +4,9 @@
   "description": "Framework-agnostic cookie/data consent manager (LGPD/GDPR) with a vanilla core and pluggable integrations (Google Consent Mode included).",
   "license": "MIT",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -39,9 +42,5 @@
     "gdpr",
     "consent-mode",
     "cmp"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rafaelcostapalma/consent.git"
-  }
+  ]
 }
