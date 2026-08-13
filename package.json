@@ -42,5 +42,9 @@
     "gdpr",
     "consent-mode",
     "cmp"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaelpalma88/consent-manager.git"
+  }
 }
