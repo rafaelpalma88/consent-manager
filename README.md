@@ -1,8 +1,17 @@
 # @rafaelcostapalma/consent
 
-Framework-agnostic cookie/data consent manager (LGPD/GDPR-oriented). Vanilla
-core with zero runtime dependencies, config-driven categories and copy, and
-pluggable integrations — ships with one for Google Consent Mode (GTM/GA/Ads).
+A cookie/data consent banner for sites that need to comply with LGPD
+(Brazil) or GDPR (EU): show a banner before any non-essential cookie or
+tracking script runs, let visitors accept, reject, or choose by category,
+and remember that choice. Blocks Google Analytics, Meta Pixel, chat
+widgets, or any other third-party script until the matching category is
+granted — including tags that live inside a single Google Tag Manager
+container, via a built-in Google Consent Mode integration.
+
+Framework-agnostic, zero runtime dependencies, config-driven (categories,
+copy, and links all come from the config object you pass in — nothing
+hardcoded for one specific site). Built to be reused across multiple
+client sites rather than rewritten per project.
 
 Works two ways:
 
