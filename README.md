@@ -13,6 +13,8 @@ copy, and links all come from the config object you pass in — nothing
 hardcoded for one specific site). Built to be reused across multiple
 client sites rather than rewritten per project.
 
+![Cookie consent banner example](./docs/banner-screenshot.jpg)
+
 Works two ways:
 
 - **Bundler / Next.js**: `import { init } from '@rafaelcostapalma/consent'`
@@ -54,6 +56,12 @@ If you're gating a GTM container, also inline the Consent Mode bootstrap
 the GTM loader script — it can't be a normal import, since Consent Mode
 defaults must exist before GTM has a chance to fire any tag.
 
+That alone isn't enough, though: each tag *inside* GTM (GA4, Ads, Meta
+Pixel) needs its own Consent Settings configured in the Tag Manager UI to
+actually check these signals — see
+[`docs/gtm-consent-setup.md`](./docs/gtm-consent-setup.md) for the
+click-by-click steps and how to verify it before publishing.
+
 ## Usage (plain HTML, no build step)
 
 ```html
@@ -73,6 +81,33 @@ that must be granted before it runs:
 ```html
 <script type="text/plain" data-consent-category="functional" src="https://chat.example.com/widget.js"></script>
 ```
+
+## Logging consent for an audit trail
+
+By default, consent is only stored client-side (`localStorage`), which is
+enough for most sites. If your compliance requirements call for a
+server-side record (timestamp, which categories, policy version — useful
+if you ever need to demonstrate what a specific visitor consented to),
+wire `config.onChange` to send it wherever you need:
+
+```js
+init({
+  // ...categories, texts, etc.
+  onChange(consent) {
+    fetch('/api/consent-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ consent, ts: new Date().toISOString() })
+    });
+  }
+});
+```
+
+`onChange` fires on every decision (accept all, reject, or save custom
+preferences), including the very first one. This library doesn't ship a
+backend for this on purpose — where that log lives (a database, a
+serverless function, a spreadsheet) is a decision for your app, not this
+package.
 
 ## API
 

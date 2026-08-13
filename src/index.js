@@ -119,10 +119,44 @@ function el(tag, className, html) {
   return e;
 }
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 function closeUI() {
   if (state.ui.banner) { state.ui.banner.remove(); state.ui.banner = null; }
   if (state.ui.overlay) { state.ui.overlay.remove(); state.ui.overlay = null; }
   if (state.ui.modal) { state.ui.modal.remove(); state.ui.modal = null; }
+  if (state.ui.keydownHandler) {
+    document.removeEventListener('keydown', state.ui.keydownHandler);
+    state.ui.keydownHandler = null;
+  }
+  if (state.ui.lastFocused) {
+    if (document.contains(state.ui.lastFocused)) state.ui.lastFocused.focus();
+    state.ui.lastFocused = null;
+  }
+}
+
+// WAI-ARIA dialog pattern: Tab/Shift+Tab cycle within the dialog instead of
+// escaping to the page behind it, and Escape triggers onEscape (usually "close").
+function trapFocus(container, onEscape) {
+  return function (ev) {
+    if (ev.key === 'Escape') {
+      onEscape();
+      return;
+    }
+    if (ev.key !== 'Tab') return;
+    const focusable = Array.prototype.slice.call(container.querySelectorAll(FOCUSABLE_SELECTOR));
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (ev.shiftKey && document.activeElement === first) {
+      ev.preventDefault();
+      last.focus();
+    } else if (!ev.shiftKey && document.activeElement === last) {
+      ev.preventDefault();
+      first.focus();
+    }
+  };
 }
 
 function renderBanner() {
@@ -171,13 +205,16 @@ function renderPreferences() {
   const config = state.config;
   const t = config.texts;
   const current = state.consent || getStoredConsent(config) || defaultConsent(config.categories);
+  const trigger = document.activeElement;
   closeUI();
+  if (trigger && trigger !== document.body) state.ui.lastFocused = trigger;
 
   const overlay = el('div', 'mkc-overlay');
   const modal = el('div', 'mkc-modal');
   modal.setAttribute('role', 'dialog');
   modal.setAttribute('aria-modal', 'true');
   modal.setAttribute('aria-label', t.prefsTitle);
+  modal.setAttribute('tabindex', '-1');
 
   const rows = config.categories.map((cat) => {
     const checked = current[cat.id] ? 'checked' : '';
@@ -214,6 +251,11 @@ function renderPreferences() {
     return out;
   }
 
+  function dismiss() {
+    closeUI();
+    if (!getStoredConsent(config)) renderBanner();
+  }
+
   modal.addEventListener('click', (ev) => {
     const action = ev.target.getAttribute('data-action');
     if (action === 'save') {
@@ -223,20 +265,23 @@ function renderPreferences() {
       applyConsent(defaultConsent(config.categories));
       closeUI();
     } else if (action === 'close') {
-      closeUI();
-      if (!getStoredConsent(config)) renderBanner();
+      dismiss();
     }
   });
 
-  overlay.addEventListener('click', () => {
-    closeUI();
-    if (!getStoredConsent(config)) renderBanner();
-  });
+  overlay.addEventListener('click', dismiss);
 
   document.body.appendChild(overlay);
   document.body.appendChild(modal);
   state.ui.overlay = overlay;
   state.ui.modal = modal;
+
+  const keydownHandler = trapFocus(modal, dismiss);
+  document.addEventListener('keydown', keydownHandler);
+  state.ui.keydownHandler = keydownHandler;
+
+  const firstFocusable = modal.querySelector(FOCUSABLE_SELECTOR);
+  (firstFocusable || modal).focus();
 }
 
 // --- Public API -------------------------------------------------------
