@@ -242,6 +242,11 @@ function renderPreferences() {
 // --- Public API -------------------------------------------------------
 
 export function init(userConfig = {}) {
+  // Re-calling init() (React StrictMode's double effect-invoke, Fast Refresh,
+  // or a consumer just calling it twice) must not leave the previous
+  // instance's banner/modal orphaned in the DOM.
+  if (state) closeUI();
+
   const config = Object.assign({}, DEFAULTS, userConfig);
   config.texts = Object.assign({}, DEFAULTS.texts, userConfig.texts);
   config.categories = userConfig.categories || DEFAULTS.categories;
